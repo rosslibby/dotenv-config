@@ -1,0 +1,29 @@
+{
+  "name": "@notross/dotenv-config",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node src/index.ts"
+  },
+  "author": {
+    "name": "Ross Libby",
+    "email": "dev@rosslibby.com",
+    "github": "https://github.com/rosslibby",
+    "url": "https://rosslibby.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosslibby/dotenv-config.git"
+  },
+  "exports": {
+    ".": {
+      "import": "dist/esm/index.js",
+      "require": "dist/cjs/index.js",
+      "types": "dist/cjs/index.d.ts"
+    }
+  }
+}
