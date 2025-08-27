@@ -10,7 +10,7 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build": "yarn build:cjs && yarn build:esm",
     "dev": "nodemon --exec ts-node src/index.ts",
-    "prepare": "ts-node prepare.ts"
+    "prepare": "ts-node prepare-package.ts"
   },
   "author": {
     "name": "Ross Libby",
