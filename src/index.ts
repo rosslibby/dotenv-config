@@ -1,18 +1,12 @@
 import path from 'path';
 import { config } from 'dotenv';
+import { BuildEnvOptions, EnvCollection } from './types';
 import { autoPrefix, filterByPrefix, injectParams } from './utils';
 
-type BuildEnvOptions = {
-  filename?: string;
-  prefix?: string;
-};
-
-function autoEnv(
-  prefix?: string,
-): Record<string, Record<string, string>> {
+function autoEnv(): EnvCollection {
   const vars: Record<string, string> = {};
   config({ processEnv: vars });
-  return autoPrefix(vars, prefix);
+  return autoPrefix(vars);
 };
 
 function buildEnv({
