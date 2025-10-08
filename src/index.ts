@@ -2,6 +2,7 @@ import path from 'path';
 import { config } from 'dotenv';
 import { BuildEnvOptions, EnvCollection, EnvVars } from './types';
 import { autoPrefix, filterByPrefix, injectParams } from './utils';
+import { client, env, getEnv } from './client';
 
 function autoEnv(): EnvCollection {
   const vars: EnvVars = {};
@@ -25,4 +26,4 @@ function buildEnv({
 }
 
 export default buildEnv;
-export { autoEnv, buildEnv };
+export { autoEnv, buildEnv, client, env, getEnv };
