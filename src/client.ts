@@ -15,20 +15,38 @@ class State {
 
   private get(prefix?: string): EnvCollection | EnvVars {
     if (prefix) {
-      return this.findPrefix(prefix) as EnvVars
+      return this.findPrefixed(prefix) as EnvVars
     } else {
       return this.collections as EnvCollection
     }
   }
 
-  private findPrefix(prefix: string): EnvVars {
-    prefix = prefix.endsWith('_') ? prefix : prefix + '_'
+  private findPrefixWithUnderscore(prefix: string): EnvVars {
     const filtered = filterByPrefix(this.vars, prefix)
     const paramaterized = injectParams(filtered)
     return paramaterized
   }
+
+  private findPrefixed(prefix: string): EnvVars {
+    if (prefix.endsWith('_')) {
+      return this.findPrefixWithUnderscore(prefix)
+    } else {
+      const withUnderscore = filterByPrefix(this.vars, `${prefix}_`)
+      const sansUnderscore = filterByPrefix(this.vars, prefix)
+      const [results] = [
+        sansUnderscore,
+        withUnderscore,
+      ].sort((a, b) => Object.keys(b).length - Object.keys(a).length)
+      const paramaterized = injectParams(results)
+      return paramaterized
+    }
+  }
 }
 
 export const client = new State()
-export const env = () => client.env() as EnvCollection
+export const env = (
+  prefix?: string,
+) => typeof prefix === 'undefined'
+  ? client.env() as EnvCollection
+  : client.env(prefix) as EnvVars
 export const getEnv = (prefix: string) => client.env(prefix) as EnvVars

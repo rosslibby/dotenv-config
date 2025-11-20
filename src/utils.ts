@@ -3,16 +3,30 @@ import { EnvCollection, EnvVars } from './types';
 export function autoPrefix(
   vars: EnvVars,
 ): EnvCollection {
-  return Array(...new Set(
-    Object.keys(vars).map(
-      (k) => k.split('_').shift() as string
+  return Array(
+    ...new Set(
+      Object.keys(vars).map((key) => {
+        if (key.includes('_')) {
+          return key.split('_')[0] + '_'
+        } else {
+          return key
+        }
+      })
     )
-  )).reduce((acc, prefix) => ({
-    ...acc,
-    [prefix.toLowerCase()]: injectParams(
-      filterByPrefix(vars, `${prefix}_`),
-    ),
-  }), {});
+  )
+  .reduce((acc, prefix) => {
+    const [key] = prefix.toLowerCase().split('_')
+    
+    const value = !prefix.endsWith('_') &&
+      Object.keys(vars).includes(prefix)
+      ? vars[prefix]
+      : injectParams(filterByPrefix(vars, prefix))
+
+    return {
+      ...acc,
+      [key]: value,
+    }
+  }, {})
 }
 
 export function filterByPrefix(
@@ -34,6 +48,11 @@ function rekey(
 ): string {
   const trim = prefix.length;
   key = key.substring(trim);
+
+  if (key.startsWith('_')) {
+    key = key.substring(1)
+  }
+
   return key.toLowerCase().split('_')
     .reduce((acc, str, i) => {
       if (i === 0) return str;
