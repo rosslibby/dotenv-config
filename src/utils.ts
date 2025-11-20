@@ -1,7 +1,8 @@
+import { EnvCollection, EnvVars } from './types';
+
 export function autoPrefix(
-  vars: Record<string, string>,
-  prefix?: string,
-): Record<string, Record<string, string>> {
+  vars: EnvVars,
+): EnvCollection {
   return Array(...new Set(
     Object.keys(vars).map(
       (k) => k.split('_').shift() as string
@@ -15,9 +16,9 @@ export function autoPrefix(
 }
 
 export function filterByPrefix(
-  env: Record<string, string>,
+  env: EnvVars,
   prefix?: string,
-): Record<string, string> {
+): EnvVars {
   return Object.entries(env)
     .filter(
       ([key]) => prefix ? key.startsWith(prefix) : true

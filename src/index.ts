@@ -1,25 +1,20 @@
 import path from 'path';
 import { config } from 'dotenv';
+import { BuildEnvOptions, EnvCollection, EnvVars } from './types';
 import { autoPrefix, filterByPrefix, injectParams } from './utils';
+import { client, env, getEnv } from './client';
 
-type BuildEnvOptions = {
-  filename?: string;
-  prefix?: string;
-};
-
-function autoEnv(
-  prefix?: string,
-): Record<string, Record<string, string>> {
-  const vars: Record<string, string> = {};
+function autoEnv(): EnvCollection {
+  const vars: EnvVars = {};
   config({ processEnv: vars });
-  return autoPrefix(vars, prefix);
+  return autoPrefix(vars);
 };
 
 function buildEnv({
   filename,
   prefix,
-}: BuildEnvOptions): Record<string, string> {
-  const envVars: Record<string, string> = {};
+}: BuildEnvOptions): EnvVars {
+  const envVars: EnvVars = {};
   const filepath = filename && path.resolve(process.cwd(), filename);
   config({
     ...(filepath ? { path: filepath } : {}),
@@ -31,4 +26,4 @@ function buildEnv({
 }
 
 export default buildEnv;
-export { autoEnv, buildEnv };
+export { autoEnv, buildEnv, client, env, getEnv };
