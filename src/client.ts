@@ -44,9 +44,18 @@ class State {
 }
 
 export const client = new State()
-export const env = (
-  prefix?: string,
-) => typeof prefix === 'undefined'
-  ? client.env() as EnvCollection
-  : client.env(prefix) as EnvVars
-export const getEnv = (prefix: string) => client.env(prefix) as EnvVars
+
+function env(): EnvCollection
+function env(prefix: string): EnvVars
+
+function env(prefix?: string): EnvCollection | EnvVars {
+  if (typeof prefix === 'undefined') {
+    return client.env() as EnvCollection
+  } else {
+    return client.env(prefix) as EnvVars
+  }
+}
+
+const getEnv = (prefix: string) => client.env(prefix) as EnvVars
+
+export { env, getEnv }
