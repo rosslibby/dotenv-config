@@ -9,7 +9,7 @@ class State {
   public env = this.get.bind(this)
 
   constructor() {
-    config({ processEnv: this.vars })
+    config({ processEnv: this.vars, quiet: true })
     this.collections = autoPrefix(this.vars)
   }
 

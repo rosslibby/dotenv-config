@@ -6,7 +6,7 @@ import { client, env, getEnv } from './client';
 
 function autoEnv(): EnvCollection {
   const vars: EnvVars = {};
-  config({ processEnv: vars });
+  config({ processEnv: vars, quiet: true });
   return autoPrefix(vars);
 };
 
@@ -19,6 +19,7 @@ function buildEnv({
   config({
     ...(filepath ? { path: filepath } : {}),
     processEnv: envVars,
+    quiet: true,
   });
   const filtered = filterByPrefix(envVars, prefix);
   const paramaterized = injectParams(filtered);
